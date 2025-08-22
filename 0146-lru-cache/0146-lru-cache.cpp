@@ -49,7 +49,7 @@ public:
     void put(int key, int value) {
         if(mp.find(key)!=mp.end()){
            Node* node=mp[key];
-           node->val=value;
+        //    node->val=value;
            deleteNode(node);
            insertAfterHead(node);
         }else{
