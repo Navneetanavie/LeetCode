@@ -11,7 +11,7 @@
  */
 class Solution {
 public:
-unordered_map<int, vector<int>>adj;
+unordered_map<int,vector<int>>adj;
     int amountOfTime(TreeNode* root, int start) {
         constructGraph(root);
 
@@ -19,23 +19,27 @@ unordered_map<int, vector<int>>adj;
         q.push(start);
 
         unordered_set<int>vis;
+        vis.insert(start);
 
-        int cnt=-1;
+        int cnt=0;
 
         while(!q.empty()){
-            cnt++;
-            for(int i=q.size();i>0;i--){
+            int size=q.size();
+           
+            for(int i=0;i<size;i++){
              int node=q.front();
               q.pop();
-             vis.insert(node);
+            
              for(auto it:adj[node]){
                 if(!vis.count(it)){
                     q.push(it);
+                    vis.insert(it);
                 }
               } 
             }
+            cnt++;
         }
-           return cnt;
+           return --cnt;
     }
     void constructGraph(TreeNode* root){
         if(root==NULL) return;
