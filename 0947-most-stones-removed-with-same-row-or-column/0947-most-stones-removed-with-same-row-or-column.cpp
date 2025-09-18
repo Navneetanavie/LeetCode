@@ -17,7 +17,7 @@ public:
     }
   int find(vector<int>&parent,int node){
     if(parent[node]==node)  return node;
-    return find(parent,parent[node]);
+    return parent[node]=find(parent,parent[node]);
   }
 
     int removeStones(vector<vector<int>>& stones) {
