@@ -1,35 +1,34 @@
 class Solution {
 public:
-  void make(int i,vector<int>&parent,vector<int>&size){
-     parent[i]=i;
-     size[i]=i;
-  }
 
-  void Union(int node1, int node2, vector<int>&parent,vector<int>&size){
-    node1=find(node1,parent);
-    node2=find(node2,parent);
-    if(node1!=node2){
-        if(size[node1]<size[node2])
-         swap(node1,node2);
+
+  void Union(vector<int>&parent,vector<int>&size,int i,int j){
+        int u=find(parent,i);
+        int v=find(parent,j);
+        if(u==v)return;
+        if(size[u]<size[v]){
+            parent[u]=v;
+            size[v]+=size[u];
+        }
+        else{
+            parent[v]=u;
+            size[u]+=size[v];
+        }
     }
-    parent[node2]=node1;
-    size[node1]+=size[node2];
-  }
-
-  int find(int node,vector<int>&parent){
+  int find(vector<int>&parent,int node){
     if(parent[node]==node)  return node;
-    return parent[node]=find(parent[node],parent);
+    return find(parent,parent[node]);
   }
 
     int removeStones(vector<vector<int>>& stones) {
         int n=stones.size();
         vector<int>parent(n+1,0),size(n+1,1);
         for(int i=0;i<n;i++)
-          make(i,parent,size);
+         parent[i]=i;
         for(int i=0;i<n;i++){
            for(int j=i+1;j<n;j++){
              if(stones[i][0]==stones[j][0]||stones[i][1]==stones[j][1])
-              Union(i,j,parent,size);
+              Union(parent,size,i,j);
            } 
         }
             int cnt=0;
