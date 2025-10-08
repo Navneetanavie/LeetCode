@@ -11,18 +11,22 @@
  */
 class Solution {
 public:
-int BTMaxSum(TreeNode* root, int &pathSum){
+  unordered_map<TreeNode*, int>map;
+  int maxValue=INT_MIN;
+  int solve(TreeNode* root){
     if(root==NULL) return 0;
-    int lh=max(0,BTMaxSum(root->left,pathSum));
-    int rh=max(0,BTMaxSum(root->right,pathSum));
-    pathSum=max(pathSum,root->val+lh+rh);
-    return max(lh,rh)+root->val;
+    if(map.count(root)) return map[root];
 
-}
+     int leftMaxPath=max(0,solve(root->left));
+    int rightMaxPath=max(0,solve(root->right));
+
+     maxValue=max(maxValue,leftMaxPath+rightMaxPath+root->val);
+     
+     return map[root]=root->val+max(leftMaxPath,rightMaxPath);
+  }
     int maxPathSum(TreeNode* root) {
-        
-        int pathSum=INT_MIN;
-        BTMaxSum(root,pathSum);
-        return pathSum;
+       solve(root);
+       return maxValue;
+
     }
 };
