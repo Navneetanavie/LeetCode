@@ -10,16 +10,15 @@
  * };
  */
 class Solution {
-public:
-int solve(TreeNode* root, int &l, int &r){
-     if(root==NULL) return 0;
-        int ll=0,lr=0,rr=0,rl=0;
-       l=solve(root->left,ll,lr);
-       r=solve(root->right,rl,rr);
-       return max(root->val+ll+lr+rl+rr, l+r);
-}
+public: 
+  unordered_map<TreeNode*,int>dp;
     int rob(TreeNode* root) {
-       int l,r;
-       return solve(root, l, r);
+       if(root==NULL) return 0;
+       if(dp.count(root)) return dp[root];
+        int ans=0;
+       if(root->left) ans+=rob(root->left->left)+rob(root->left->right);
+      if(root->right) ans+=rob(root->right->left)+rob(root->right->right);
+       return dp[root]= max(root->val+ans,rob(root->right)+rob(root->left));
+       
     }
 };
