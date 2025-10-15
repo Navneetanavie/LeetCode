@@ -8,39 +8,35 @@ public:
         for(int i=0;i<n;i++){
             for(int j=0;j<m;j++){
                 if(grid[i][j]==2){
-                  q.push({{i,j},0});
-                  vis[i][j]=2;
+                      vis[i][j]=2;
+                      q.push({{i,j},0});
                 }
-                else
-                vis[i][j]=0;
             }
         }
-        int tm=0,cnt=0;
-        int dr[]={1,-1,0,0};
-        int dc[]={0,0,1,-1};
-         while(!q.empty()){
-         auto it=q.front();
-         int row=it.first.first;
-         int col=it.first.second;
-         int t=it.second;
-         tm=max(t,tm);
-         q.pop();
-         for(int i=0;i<4;i++){
-            int nr=row+dr[i];
-            int nc=col+dc[i];
-            if(nr>=0&&nr<n&&nc>=0&&nc<m&&grid[nr][nc]==1&&vis[nr][nc]!=2){
-                q.push({{nr,nc},t+1});
-                vis[nr][nc]=2;
+            int maximumTime=0;
+            int dr[]={0,1,0,-1};
+            int dc[]={1,0,-1,0};
+          while(!q.empty()){
+            int row=q.front().first.first;
+            int col=q.front().first.second;
+            int tm=q.front().second;
+            maximumTime=max(tm,maximumTime);
+            q.pop();
+            for(int i=0;i<4;i++){
+                int nr=row+dr[i];
+                int nc=col+dc[i];
+                if(nr>=0&&nr<n&&nc>=0&&nc<m&&vis[nr][nc]==0&&grid[nr][nc]==1){
+                    vis[nr][nc]=2;
+                    q.push({{nr,nc},tm+1});
+                }
+             }
+          }
+         for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+               if(grid[i][j]==1&&vis[i][j]!=2)
+               return -1;
             }
          }
-
-         }
-     for(int i=0;i<n;i++){
-        for(int j=0;j<m;j++){
-            if(grid[i][j]==1&&vis[i][j]!=2)
-            return -1;
-        }
-     }
-     return tm;
+         return maximumTime;
     }
 };
