@@ -1,49 +1,44 @@
 class Solution {
 public:
     int orangesRotting(vector<vector<int>>& grid) {
-        int m=grid.size();
-        int n=grid[0].size();
+        int n=grid.size();
+        int m=grid[0].size();
         queue<pair<int,int>>q;
         vector<vector<int>>vis=grid;
         int countFreshOranges=0;
-        for(int i=0;i<m;i++){
-            for(int j=0;j<n;j++){
-                if(vis[i][j]==2)
-                   q.push({i,j});
-                if(vis[i][j]==1)
-                   countFreshOranges++;
-                 
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(vis[i][j]==2) q.push({i,j});
+                else if(vis[i][j]==1) countFreshOranges++;
             }
+        }
+        int dr[]={0,0,1,-1};
+        int dc[]={1,-1,0,0};
+        int minutes=-1;
+        while(!q.empty()){
+          int size=q.size();
+          while(size--){
+            auto it=q.front();
+            int row=it.first;
+            int col=it.second;
+            q.pop();
+            for(int i=0;i<4;i++){
+                int nr=row+dr[i];
+                int nc=col+dc[i];
+                if(nr>=0&&nr<n&&nc>=0&&nc<m&&vis[nr][nc]==1){
+                    vis[nr][nc]=2;
+                    q.push({nr,nc});
+                    countFreshOranges--;
+                }
+            }
+               
+          }
+          minutes++;
+          
         }
 
-        int minutes=-1;
-        int dr[]={0,1,0,-1};
-        int dc[]={1,0,-1,0};
-        while(!q.empty()){
-            int size=q.size();
-            while(size--){
-            int r=q.front().first;
-            int c=q.front().second;
-            
-            q.pop();
-            
-            for(int i=0;i<4;i++){
-                int nr=r+dr[i];
-                int nc=c+dc[i];
-                if(nr>=0&&nr<m&&nc>=0&&nc<n&&vis[nr][nc]==1){
-                         vis[nr][nc]=2;
-                         countFreshOranges--;
-                         q.push({nr,nc});
-                }
-             }
-            }
-            minutes++;
-        }
-       
-           
-       
-       if(countFreshOranges>0)  return -1;
-         if(minutes==-1) return 0;
-       return minutes;
+        if(countFreshOranges>0) return -1;
+        if(minutes==-1) return 0;
+        return minutes;
     }
 };
