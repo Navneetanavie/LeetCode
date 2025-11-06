@@ -11,15 +11,16 @@
  */
 class Solution {
 public:
-   bool BTorBST(TreeNode* root, long long minL , long long minR){
-        if(root==NULL) return true;
-        if(root->val<minR&&root->val>minL)
-        return BTorBST(root->left,minL,root->val)&&BTorBST(root->right,root->val,minR);
-        else return false;
-   }
+bool BTorBST(TreeNode* root, long long minL, long long minR){
+      if(root==NULL) return true;
+      if(root->val<minR&&root->val>minL)
+       return BTorBST(root->left,minL,root->val)&&BTorBST(root->right,root->val,minR);
+       else return false;
+}
     bool isValidBST(TreeNode* root) {
-       long minL=LONG_MIN;
+        long minL=LONG_MIN;
        long minR=LONG_MAX;
        return BTorBST(root,minL,minR);
+      
     }
 };
