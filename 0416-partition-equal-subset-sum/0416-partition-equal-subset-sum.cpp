@@ -1,28 +1,25 @@
 class Solution {
-vector<vector<int>>dp;
-private:
-bool solve(vector<int>&nums,int ind,int sum){
-    
-    if(sum==0) return true;
-    if(ind==0) return nums[ind]==sum;
-    if(dp[ind][sum]!=-1) return dp[ind][sum];
-    bool notpick=solve(nums,ind-1,sum);
-    bool pick=false;
-    if(nums[ind]<=sum) pick=solve(nums,ind-1,sum-nums[ind]);
-    return dp[ind][sum]=(pick||notpick);
-}
 public:
+vector<vector<int>>dp;
+bool solve(int n,vector<int>& nums, int targetSum){
+    if(n==0) return nums[n]==targetSum;
+    if(targetSum==0) return true;
+    if(dp[n][targetSum]!=-1) return dp[n][targetSum];
+    bool notpick=solve(n-1,nums,targetSum);
+    bool pick=false;
+    if(targetSum-nums[n]>=0)
+    pick=solve(n-1,nums,targetSum-nums[n]);
+    return dp[n][targetSum]=pick||notpick;
+}
     bool canPartition(vector<int>& nums) {
-        long long sum=0;
         int n=nums.size();
-        for(int i=0;i<nums.size();i++)
-        sum+=nums[i];
-       
-    if(sum%2==1) return false;
-     else {
-        int target=sum/2;
-       dp=vector<vector<int>>(n+1,vector<int>(target+1,-1));
-       return solve(nums,n-1,target);
-     }  
+        long long target=accumulate(nums.begin(),nums.end(),0);
+        if(target%2==0) { 
+        int targetSum=target/2;
+        dp=vector<vector<int>>(n,vector<int>(targetSum+1,-1));
+        return solve(n-1,nums,targetSum);
+        }
+        else return false;
+
     }
 };
